@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Ay Prensesi Lunara - Giydirme Oyunu</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Verdana';
+        background: linear-gradient(180deg, #1a1a2e, #16213e);
+        color: white;
+        overflow-x: hidden;
+        text-align: center;
+    }
+
+    h1 {
+        margin-top: 20px;
+        font-size: 32px;
+        letter-spacing: 2px;
+        color: #f8e3ff;
+        text-shadow: 0 0 10px #d190ff;
+    }
+
+    #gameArea {
+        margin: 30px auto;
+        width: 420px;
+        height: 600px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid #c8a2ff;
+        border-radius: 15px;
+        position: relative;
+        backdrop-filter: blur(8px);
+    }
+
+    /* Lunara karakterinin silueti */
+    #lunara {
+        width: 140px;
+        height: 350px;
+        background: #ffe1ff;
+        border-radius: 80px;
+        position: absolute;
+        top: 120px;
+        left: 140px;
+        z-index: 1;
+    }
+
+    /* Kıyafetler */
+    .item {
+        width: 130px;
+        height: 90px;
+        border-radius: 10px;
+        margin: 10px;
+        display: inline-block;
+        cursor: grab;
+        border: 2px solid #fff3;
+    }
+
+    #dress1 { background: #ff4d6d; }
+    #dress2 { background: #6a4c93; }
+    #dress3 { background: #ffb4a2; }
+    #heels1 { background: #000; }
+    #heels2 { background: #c1121f; }
+    #heels3 { background: #ffe066; }
+    #hair1 { background: #331a00; }
+    #hair2 { background: #ffe6a7; }
+    #hair3 { background: #6f1d1b; }
+    #hair4 { background: #0a9396; }
+    #hair5 { background: #9d4edd; }
+
+    /* Oyuna eklenen kıyafetler */
+    .onLunara {
+        position: absolute;
+        left: 145px;
+        z-index: 3;
+    }
+
+    #dressSlot { top: 260px; width: 130px; height: 200px; border-radius: 20px; }
+    #hairSlot { top: 70px; width: 160px; height: 120px; border-radius: 50%; left: 130px; }
+    #heelsSlot { top: 460px; width: 120px; height: 70px; border-radius: 20px; left: 150px; }
+</style>
+</head>
+
+<body>
+<h1>🌙 Ay Prensesi Lunara - Giydirme Oyunu</h1>
+
+<div id="gameArea">
+    <div id="lunara"></div>
+
+    <!-- Giydirilen parçaların görünümü -->
+    <div id="hairSlot" class="onLunara"></div>
+    <div id="dressSlot" class="onLunara"></div>
+    <div id="heelsSlot" class="onLunara"></div>
+</div>
+
+<h2>Saç Modelleri</h2>
+<div id="hair1" class="item" draggable="true"></div>
+<div id="hair2" class="item" draggable="true"></div>
+<div id="hair3" class="item" draggable="true"></div>
+<div id="hair4" class="item" draggable="true"></div>
+<div id="hair5" class="item" draggable="true"></div>
+
+<h2>Elbiseler</h2>
+<div id="dress1" class="item" draggable="true"></div>
+<div id="dress2" class="item" draggable="true"></div>
+<div id="dress3" class="item" draggable="true"></div>
+
+<h2>Topuklu Ayakkabılar</h2>
+<div id="heels1" class="item" draggable="true"></div>
+<div id="heels2" class="item" draggable="true"></div>
+<div id="heels3" class="item" draggable="true"></div>
+
+<script>
+    const hairSlot = document.getElementById("hairSlot");
+    const dressSlot = document.getElementById("dressSlot");
+    const heelsSlot = document.getElementById("heelsSlot");
+
+    let dragged;
+
+    document.addEventListener("dragstart", function(event) {
+        dragged = event.target;
+    });
+
+    // slotlara bırakma
+    [hairSlot, dressSlot, heelsSlot].forEach(slot => {
+        slot.addEventListener("dragover", event => event.preventDefault());
+
+        slot.addEventListener("drop", event => {
+            if (dragged.id.includes("hair") && slot === hairSlot) {
+                slot.style.background = dragged.style.background;
+            }
+            if (dragged.id.includes("dress") && slot === dressSlot) {
+                slot.style.background = dragged.style.background;
+            }
+            if (dragged.id.includes("heels") && slot === heelsSlot) {
+                slot.style.background = dragged.style.background;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
