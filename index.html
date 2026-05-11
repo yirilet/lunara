@@ -4,138 +4,328 @@
 <meta charset="UTF-8">
 <title>Ay Prensesi Lunara - Giydirme Oyunu</title>
 <style>
+    /* 1. GENEL AYARLAR VE ARKA PLAN */
     body {
         margin: 0;
-        font-family: 'Verdana';
-        background: linear-gradient(180deg, #1a1a2e, #16213e);
-        color: white;
-        overflow-x: hidden;
-        text-align: center;
+        padding: 0;
+        overflow: hidden; /* Kaydırma çubuğunu gizle */
+        font-family: 'Times New Roman', Times, serif; /* Görsele uygun font */
+        /* image_1.png'den kesilen temiz arka plan */
+        background-image: url('arka_plan.jpg');
+        background-size: cover;
+        background-position: center;
+        color: #e6e6fa; /* Hafif morumsu beyaz */
+        user-select: none; /* Metin seçimini engelle */
     }
 
-    h1 {
-        margin-top: 20px;
-        font-size: 32px;
-        letter-spacing: 2px;
-        color: #f8e3ff;
-        text-shadow: 0 0 10px #d190ff;
-    }
-
-    #gameArea {
-        margin: 30px auto;
-        width: 420px;
-        height: 600px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 2px solid #c8a2ff;
-        border-radius: 15px;
+    #gameContainer {
+        width: 100vw;
+        height: 100vh;
         position: relative;
-        backdrop-filter: blur(8px);
     }
 
-    /* Lunara karakterinin silueti */
-    #lunara {
-        width: 140px;
-        height: 350px;
-        background: #ffe1ff;
-        border-radius: 80px;
+    /* 2. MANKEN VE KATMANLAR */
+    #characterStage {
         position: absolute;
-        top: 120px;
-        left: 140px;
-        z-index: 1;
+        width: 400px;
+        height: 600px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
     }
 
-    /* Kıyafetler */
-    .item {
-        width: 130px;
-        height: 90px;
+    #mannequin {
+        width: 100%;
+        height: 100%;
+        background-image: url('manken_poz.png'); /* image_1.png'den kesilen manken */
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    /* Giyilen parçalar için katmanlar (Z-index ile sıralama) */
+    .worn-item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none; /* Giysilerin üzerinden sürüklemeye izin ver */
+    }
+
+    #wornHair { z-index: 15; }    /* Saç en üstte */
+    #wornDress { z-index: 12; }   /* Elbise gövdede */
+    #wornShoes { z-index: 11; }   /* Ayakkabı altta */
+    #wornTac { z-index: 16; }    /* Taç saçın üstünde */
+    #wornAsa { z-index: 13; }    /* Asa elde, elbisenin üstünde/altında */
+
+    /* Bırakma Alanı (Drop Zone) - Mankenin gövdesi */
+    #dropZone {
+        position: absolute;
+        width: 60%;
+        height: 80%;
+        top: 10%;
+        left: 20%;
+        /* debug için border: 2px dashed red; */
+        z-index: 20;
+    }
+
+    /* 3. MENÜLER VE ARAYÜZ (Görseldeki yerleşim) */
+    .menu-panel {
+        position: absolute;
+        background-image: url('menuler_taslak.png'); /* Sadece çerçeveler */
+        background-size: 100% 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .menu-header {
+        text-align: center;
+        font-size: 18px;
+        margin-top: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Sol Menü (Saç ve Ayakkabı) */
+    #leftPanel {
+        width: 250px;
+        height: 550px;
+        left: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Sağ Menü (Elbiseler) */
+    #rightPanel {
+        width: 250px;
+        height: 700px;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Alt Menü (Taçlar, Asalar ve Butonlar) */
+    #bottomPanel {
+        width: 600px;
+        height: 150px;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    /* 4. SÜRÜKLENEBİLİR ÖĞELER (İKONLAR) */
+    .item-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+        justify-items: center;
+    }
+
+    .item-icon {
+        width: 80px;
+        height: 100px;
+        background-color: rgba(230, 230, 250, 0.1); /* Hafif şeffaf kareler */
+        border: 2px solid rgba(230, 230, 250, 0.3);
         border-radius: 10px;
-        margin: 10px;
-        display: inline-block;
         cursor: grab;
-        border: 2px solid #fff3;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        transition: transform 0.2s;
     }
 
-    #dress1 { background: #ff4d6d; }
-    #dress2 { background: #6a4c93; }
-    #dress3 { background: #ffb4a2; }
-    #heels1 { background: #000; }
-    #heels2 { background: #c1121f; }
-    #heels3 { background: #ffe066; }
-    #hair1 { background: #331a00; }
-    #hair2 { background: #ffe6a7; }
-    #hair3 { background: #6f1d1b; }
-    #hair4 { background: #0a9396; }
-    #hair5 { background: #9d4edd; }
-
-    /* Oyuna eklenen kıyafetler */
-    .onLunara {
-        position: absolute;
-        left: 145px;
-        z-index: 3;
+    .item-icon:hover {
+        transform: scale(1.05);
+        border-color: rgba(230, 230, 250, 0.8);
     }
 
-    #dressSlot { top: 260px; width: 130px; height: 200px; border-radius: 20px; }
-    #hairSlot { top: 70px; width: 160px; height: 120px; border-radius: 50%; left: 130px; }
-    #heelsSlot { top: 460px; width: 120px; height: 70px; border-radius: 20px; left: 150px; }
+    .item-icon.dragging {
+        opacity: 0.5;
+        cursor: grabbing;
+    }
+
+    /* Ayakkabı ikonları için özel boyut */
+    .shoes-grid .item-icon { height: 60px; }
+
+    /* Alt menü ikonları */
+    .bottom-icon {
+        width: 80px;
+        height: 80px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        cursor: grab;
+    }
+
+    /* 5. BUTONLAR */
+    .action-button {
+        background: linear-gradient(180deg, #6a5acd, #483d8b);
+        border: 2px solid #e6e6fa;
+        color: #e6e6fa;
+        padding: 10px 20px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .action-button:hover {
+        background: linear-gradient(180deg, #8470ff, #6a5acd);
+    }
+
 </style>
 </head>
-
 <body>
-<h1>🌙 Ay Prensesi Lunara - Giydirme Oyunu</h1>
 
-<div id="gameArea">
-    <div id="lunara"></div>
+<div id="gameContainer">
 
-    <!-- Giydirilen parçaların görünümü -->
-    <div id="hairSlot" class="onLunara"></div>
-    <div id="dressSlot" class="onLunara"></div>
-    <div id="heelsSlot" class="onLunara"></div>
+    <div id="characterStage">
+        <div id="mannequin">
+            <div id="wornHair" class="worn-item"></div>
+            <div id="wornDress" class="worn-item"></div>
+            <div id="wornShoes" class="worn-item"></div>
+            <div id="wornTac" class="worn-item"></div>
+            <div id="wornAsa" class="worn-item"></div>
+            
+            <div id="dropZone"></div>
+        </div>
+    </div>
+
+    <div id="leftPanel" class="menu-panel">
+        <div class="menu-header">SAÇ MODELLERİ</div>
+        <div class="item-grid hair-grid">
+            <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_1_giysi.png" style="background-image: url('sac_1.png');"></div>
+            <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_2_giysi.png" style="background-image: url('sac_2.png');"></div>
+            <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_3_giysi.png" style="background-image: url('sac_3.png');"></div>
+            <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_4_giysi.png" style="background-image: url('sac_4.png');"></div>
+            <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_5_giysi.png" style="background-image: url('sac_5.png');"></div>
+        </div>
+        
+        <div class="menu-header" style="margin-top: 30px;">TOPUKLU AYAKKABILAR</div>
+        <div class="item-grid shoes-grid">
+            <div class="item-icon" draggable="true" data-type="shoes" data-worn-img="ayakkabi_1_giysi.png" style="background-image: url('ayakkabi_1.png');"></div>
+            <div class="item-icon" draggable="true" data-type="shoes" data-worn-img="ayakkabi_2_giysi.png" style="background-image: url('ayakkabi_2.png');"></div>
+            <div class="item-icon" draggable="true" data-type="shoes" data-worn-img="ayakkabi_3_giysi.png" style="background-image: url('ayakkabi_3.png');"></div>
+        </div>
+    </div>
+
+    <div id="rightPanel" class="menu-panel">
+        <div class="menu-header">ELBİSELER</div>
+        <div class="item-grid dress-grid">
+            <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_1_giysi.png" style="background-image: url('elbise_1.png');"></div>
+            <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_2_giysi.png" style="background-image: url('elbise_2.png');"></div>
+            <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_3_giysi.png" style="background-image: url('elbise_3.png');"></div>
+            <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_4_giysi.png" style="background-image: url('elbise_4.png');"></div>
+            <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_5_giysi.png" style="background-image: url('elbise_5.png');"></div>
+            <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_6_giysi.png" style="background-image: url('elbise_6.png');"></div>
+        </div>
+    </div>
+
+    <div id="bottomPanel" class="menu-panel">
+        <div class="menu-header">TAÇLAR</div>
+        <div class="bottom-icon" draggable="true" data-type="tac" data-worn-img="tac_giysi.png" style="background-image: url('tac.png');"></div>
+        
+        <button id="btnTemizle" class="action-button">TEMİZLE</button>
+        <button id="btnRasgele" class="action-button">RASGELE</button>
+        <button id="btnKaydet" class="action-button">KAYDET</button>
+        
+        <div class="menu-header">ASALAR</div>
+        <div class="bottom-icon" draggable="true" data-type="asa" data-worn-img="asa_giysi.png" style="background-image: url('asa.png');"></div>
+    </div>
+
 </div>
 
-<h2>Saç Modelleri</h2>
-<div id="hair1" class="item" draggable="true"></div>
-<div id="hair2" class="item" draggable="true"></div>
-<div id="hair3" class="item" draggable="true"></div>
-<div id="hair4" class="item" draggable="true"></div>
-<div id="hair5" class="item" draggable="true"></div>
-
-<h2>Elbiseler</h2>
-<div id="dress1" class="item" draggable="true"></div>
-<div id="dress2" class="item" draggable="true"></div>
-<div id="dress3" class="item" draggable="true"></div>
-
-<h2>Topuklu Ayakkabılar</h2>
-<div id="heels1" class="item" draggable="true"></div>
-<div id="heels2" class="item" draggable="true"></div>
-<div id="heels3" class="item" draggable="true"></div>
-
 <script>
-    const hairSlot = document.getElementById("hairSlot");
-    const dressSlot = document.getElementById("dressSlot");
-    const heelsSlot = document.getElementById("heelsSlot");
+    // 1. ÖĞELERİ VE ALANLARI SEÇME
+    const icons = document.querySelectorAll('.item-icon, .bottom-icon');
+    const dropZone = document.getElementById('dropZone');
+    
+    // Giyilen parçaların katmanları
+    const wornLayers = {
+        hair: document.getElementById('wornHair'),
+        dress: document.getElementById('wornDress'),
+        shoes: document.getElementById('wornShoes'),
+        tac: document.getElementById('wornTac'),
+        asa: document.getElementById('wornAsa')
+    };
 
-    let dragged;
-
-    document.addEventListener("dragstart", function(event) {
-        dragged = event.target;
+    // 2. SÜRÜKLEME MANTIĞI (DRAG)
+    icons.forEach(icon => {
+        icon.addEventListener('dragstart', dragStart);
+        icon.addEventListener('dragend', dragEnd);
     });
 
-    // slotlara bırakma
-    [hairSlot, dressSlot, heelsSlot].forEach(slot => {
-        slot.addEventListener("dragover", event => event.preventDefault());
+    function dragStart(e) {
+        this.classList.add('dragging');
+        // Sürüklenen öğenin verilerini transfer et
+        e.dataTransfer.setData('text/plain', this.dataset.wornImg); // Manken üzerindeki görselin adı
+        e.dataTransfer.setData('type', this.dataset.type);         // Kategorisi
+    }
 
-        slot.addEventListener("drop", event => {
-            if (dragged.id.includes("hair") && slot === hairSlot) {
-                slot.style.background = dragged.style.background;
-            }
-            if (dragged.id.includes("dress") && slot === dressSlot) {
-                slot.style.background = dragged.style.background;
-            }
-            if (dragged.id.includes("heels") && slot === heelsSlot) {
-                slot.style.background = dragged.style.background;
+    function dragEnd() {
+        this.classList.remove('dragging');
+    }
+
+    // 3. BIRAKMA MANTIĞI (DROP)
+    dropZone.addEventListener('dragover', dragOver);
+    dropZone.addEventListener('drop', dropItem);
+
+    function dragOver(e) {
+        e.preventDefault(); // Varsayılanı engelle (bırakmaya izin ver)
+    }
+
+    function dropItem(e) {
+        e.preventDefault();
+        
+        // Verileri al
+        const wornImgName = e.dataTransfer.getData('text/plain');
+        const itemType = e.dataTransfer.getData('type');
+        
+        if (wornLayers[itemType]) {
+            // İlgili katmanın arka plan görselini değiştir (Giydir)
+            wornLayers[itemType].style.backgroundImage = `url('${wornImgName}')`;
+            
+            // Görsel efekt (isteğe bağlı)
+            wornLayers[itemType].style.opacity = 0;
+            setTimeout(() => { wornLayers[itemType].style.opacity = 1; wornLayers[itemType].style.transition = 'opacity 0.3s'; }, 10);
+        }
+    }
+
+    // 4. BUTON FONKSİYONLARI
+    
+    // Temizle Butonu
+    document.getElementById('btnTemizle').addEventListener('click', () => {
+        for (let layer in wornLayers) {
+            wornLayers[layer].style.backgroundImage = 'none';
+        }
+    });
+
+    // Rasgele Butonu
+    document.getElementById('btnRasgele').addEventListener('click', () => {
+        const categories = ['hair', 'dress', 'shoes'];
+        categories.forEach(type => {
+            const items = document.querySelectorAll(`.item-icon[data-type="${type}"]`);
+            if (items.length > 0) {
+                const randomIcon = items[Math.floor(Math.random() * items.length)];
+                wornLayers[type].style.backgroundImage = `url('${randomIcon.dataset.wornImg}')`;
             }
         });
+        // Alt menü öğelerini de dahil edebilirsin
     });
+
+    // Kaydet Butonu (Basit bir örnek)
+    document.getElementById('btnKaydet').addEventListener('click', () => {
+        alert('Kombininiz kaydedildi! (Bu kısım sunucu bağlantısı gerektirir)');
+    });
+
 </script>
 
 </body>
