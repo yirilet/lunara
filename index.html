@@ -260,28 +260,23 @@
         });
     });
 
-    dropZone.addEventListener('dragover', (e) => e.preventDefault());
-
-    dropZone.addEventListener('drop', function(e) {
+dropZone.addEventListener('drop', function(e) {
         e.preventDefault();
         const img = e.dataTransfer.getData('wornImg');
         const type = e.dataTransfer.getData('type');
 
         if (wornLayers[type] && img) {
             wornLayers[type].style.backgroundImage = "url('" + img + "')";
+            
+            // --- SAÇI KÜÇÜLTMEK İÇİN ZORLAYICI KOMUT ---
+            if (type === 'hair') {
+                wornLayers[type].style.backgroundSize = "80% 80%"; // %80 yaparak küçülttük
+                wornLayers[type].style.backgroundPosition = "center top"; // Kafaya oturtmak için üste hizaladık
+            } else {
+                wornLayers[type].style.backgroundSize = "contain"; // Diğerleri normal kalsın
+            }
+            // ------------------------------------------
         }
-    });
-
-    document.getElementById('btnTemizle').addEventListener('click', () => {
-        Object.values(wornLayers).forEach(layer => layer.style.backgroundImage = 'none');
-    });
-
-    document.getElementById('btnRasgele').addEventListener('click', () => {
-        ['hair', 'dress', 'shoes'].forEach(t => {
-            const items = document.querySelectorAll('[data-type="' + t + '"]');
-            const random = items[Math.floor(Math.random() * items.length)];
-            wornLayers[t].style.backgroundImage = "url('" + random.getAttribute('data-worn') + "')";
-        });
     });
 </script>
 
