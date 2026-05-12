@@ -8,31 +8,25 @@
     body {
         margin: 0;
         padding: 0;
-        overflow: hidden; /* Kaydırma çubuğunu gizle */
-        font-family: 'Times New Roman', Times, serif; /* Görsele uygun font */
-        /* image_1.png'den kesilen temiz arka plan */
-        background-image: url('arka_plan.jpg');
-        background-size: cover;
-        background-position: center;
-        color: #e6e6fa; /* Hafif morumsu beyaz */
-        user-select: none; /* Metin seçimini engelle */
-    }
-
-    #gameContainer {
-        width: 100vw;
+    /* Görselin adını GitHub'a yüklediğin isimle aynı yap (Örn: arka_plan.jpg) */
+        background-image: url('arka_plan.jpg'); 
+        background-size: cover; /* Ekranı tamamen kaplar */
+        background-position: center; /* Resmi ortalar */
+        background-repeat: no-repeat; /* Resmin tekrarlanmasını önler */
+        background-attachment: fixed; /* Sayfa hareket etse de arka plan sabit kalır */
         height: 100vh;
-        position: relative;
+        width: 100vw;
+        overflow: hidden; /* Kenarlarda kaydırma çubuğu çıkmasını engeller */
     }
-
     /* 2. MANKEN VE KATMANLAR */
     #characterStage {
-        position: absolute;
-        width: 400px;
-        height: 600px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
+      position: absolute;
+      width: 400px;
+      height: 600px;
+      left: 50%;
+      transform: translateX(-50%); /* Sadece yatayda ortala */
+      top: 45%; /* Bu değeri artırırsan manken aşağı iner, azaltırsan yukarı çıkar */
+      z-index: 10;
     }
 
     #mannequin {
