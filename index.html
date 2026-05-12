@@ -6,18 +6,18 @@
 <style>
     /* 1. GENEL AYARLAR VE ARKA PLAN */
     body {
-        margin: 0;
-        padding: 0;
-    /* Görselin adını GitHub'a yüklediğin isimle aynı yap (Örn: arka_plan.jpg) */
-        background-image: url('arka_plan.jpg'); 
-        background-size: cover; /* Ekranı tamamen kaplar */
-        background-position: center; /* Resmi ortalar */
-        background-repeat: no-repeat; /* Resmin tekrarlanmasını önler */
-        background-attachment: fixed; /* Sayfa hareket etse de arka plan sabit kalır */
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden; /* Kenarlarda kaydırma çubuğu çıkmasını engeller */
-    }
+      margin: 0;
+      padding: 0;
+      background-image: url('arka_plan.jpg'); 
+    /* "cover" yerine "contain" kullanırsan resmi kırpmaz, 
+       ama kenarlarda boşluk kalabilir. En iyisi "100% 100%" yapmaktır: */
+      background-size: 100% 100%; 
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+   }  
     /* 2. MANKEN VE KATMANLAR */
     #characterStage {
       position: absolute;
@@ -25,7 +25,7 @@
       height: 600px;
       left: 50%;
       transform: translateX(-50%); /* Sadece yatayda ortala */
-      top: 45%; /* Bu değeri artırırsan manken aşağı iner, azaltırsan yukarı çıkar */
+      top: 25%; /* Bu değeri artırırsan manken aşağı iner, azaltırsan yukarı çıkar */
       z-index: 10;
     }
 
