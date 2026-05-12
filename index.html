@@ -50,16 +50,19 @@
         background-repeat: no-repeat;
         pointer-events: none;
         z-index: 10;
-   }
-
+    }
+    #wornDress {
+        top: 2px;   /* Elbiseyi aşağı iter */
+        left: -1px; /* Elbiseyi sola çeker */
+    }
 /* SADECE SAÇ İÇİN ÖZEL AYAR (Ekranı kaplamaması için) */
     #wornHair {
     /* Mankenin kafasına tam oturtmak için boyutu orantılı olarak sınırla */
         background-size: initial; /* Genel 'contain' ayarını sıfırla */
-        width: 35%;   /* Mankenin (characterStage) genişliğinin yarısı kadar olsun (Hizalamaya göre değiştirilebilir) */
-        height: 35%;  /* Mankenin yüksekliğinin üçte biri kadar olsun (Hizalamaya göre değiştirilebilir) */
-        left: 0%;    /* Saçı yatayda tam ortala (100-50=50, 50/2=25) */
-        top: -10%;     /* Saçı mankenin kafasının tam tepesine oturt (Kafadan çok az yukarıda) */
+        width: 25%;   /* Mankenin (characterStage) genişliğinin yarısı kadar olsun (Hizalamaya göre değiştirilebilir) */
+        height: 30%;  /* Mankenin yüksekliğinin üçte biri kadar olsun (Hizalamaya göre değiştirilebilir) */
+        left: 20%;    /* Saçı yatayda tam ortala (100-50=50, 50/2=25) */
+        top: 0%;     /* Saçı mankenin kafasının tam tepesine oturt (Kafadan çok az yukarıda) */
         z-index: 20;  /* Saç, elbisenin önünde olsun */
     
     /* Netlik için (önceki konuştuğumuz) */
