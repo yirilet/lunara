@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Ay Prensesi Lunara - Giydirme Oyunu</title>
 <style>
-    /* 1. GENEL AYARLAR */
+    /* 1. GENEL AYARLAR VE ARKA PLAN */
     body {
         margin: 0;
         padding: 0;
@@ -21,14 +21,14 @@
         font-family: sans-serif;
     }
 
-    /* 2. MANKEN SAHNESİ VE KATMANLAR */
+    /* 2. MANKEN VE KATMANLAR */
     #characterStage {
         position: absolute;
         width: 400px;
         height: 600px;
         left: 50%;
         transform: translateX(-50%);
-        top: 2%; /* Mankeni yukarı/aşağı buradan ayarla */
+        top: 2%; /* Mankenin yukarıdan aşağıya konumu */
         z-index: 10;
     }
 
@@ -42,44 +42,36 @@
         position: relative;
     }
 
-    /* Ortak Katman Özellikleri */
     .worn-item {
         position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        pointer-events: none;
+        pointer-events: none; /* Giysiler sürüklemeye engel olmasın */
     }
 
     /* Katman Sıralaması */
     #wornShoes { z-index: 11; }
     #wornDress { z-index: 12; }
     #wornAsa   { z-index: 13; }
-    #wornHair  { z-index: 15; } /* Saç elbisenin üstünde */
+    #wornHair  { z-index: 15; }
     #wornTac   { z-index: 16; }
-
-    /* SAÇ İÇİN ÖZEL BOYUTLANDIRMA (Ekranı kaplamaması için) */
-    #wornHair {
-        width: 40%;    /* Saç hala büyükse bu rakamı küçült */
-        height: auto;  /* Oranı korur */
-        left: 50%;
-        transform: translateX(-50%);
-        top: 10px;     /* Saçı aşağı/yukarı buradan kaydır */
-        background-position: top center;
-    }
 
     #dropZone {
         position: absolute;
-        width: 60%;
-        height: 80%;
-        top: 10%;
-        left: 20%;
+        width: 80%;
+        height: 90%;
+        top: 5%;
+        left: 10%;
         z-index: 20;
+        /* border: 2px dashed rgba(255,255,255,0.2); // Test için bunu açabilirsin */
     }
 
-    /* 3. MENÜLER VE ARAYÜZ */
+    /* 3. MENÜLER VE PANELLER */
     .menu-panel {
         position: absolute;
         background-image: url('menuler_taslak.png');
@@ -90,19 +82,19 @@
 
     .menu-header {
         text-align: center;
-        font-size: 16px;
-        margin-top: 10px;
+        font-size: 14px;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        margin-top: 5px;
         text-transform: uppercase;
-        color: #e6e6fa;
-        text-shadow: 1px 1px 2px #000;
     }
 
-    #leftPanel { width: 220px; height: 500px; left: 20px; top: 50%; transform: translateY(-50%); }
-    #rightPanel { width: 220px; height: 700px; right: 20px; top: 50%; transform: translateY(-50%); }
+    #leftPanel { width: 240px; height: 380px; left: 20px; top: 35%; transform: translateY(-50%); }
+    #rightPanel { width: 240px; height: 750px; right: 20px; top: 55%; transform: translateY(-50%); }
     
     #bottomPanel {
-        width: 600px;
-        height: 120px;
+        width: 550px;
+        height: 110px;
         bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
@@ -112,31 +104,31 @@
         z-index: 100;
     }
 
-    .item-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 5px; }
+    .item-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 5px; }
 
-    .item-icon {
-        width: 80px;
-        height: 100px;
-        border: 2px solid rgba(230, 230, 250, 0.3);
+    .item-icon, .bottom-icon {
+        width: 85px;
+        height: 110px;
+        border: 1px solid rgba(255,255,255,0.2);
         border-radius: 8px;
         cursor: grab;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        background-color: rgba(0,0,0,0.2);
+        background-color: rgba(0,0,0,0.1);
     }
 
-    .item-icon:hover { transform: scale(1.05); border-color: #fff; }
+    .shoes-grid .item-icon { height: 60px; }
+    .bottom-icon { width: 70px; height: 70px; }
 
-    /* 4. BUTONLAR */
     .action-button {
         background: linear-gradient(180deg, #6a5acd, #483d8b);
-        border: 2px solid #e6e6fa;
-        color: #e6e6fa;
+        border: 1px solid #e6e6fa;
+        color: white;
         padding: 8px 15px;
         border-radius: 15px;
-        font-weight: bold;
         cursor: pointer;
+        font-weight: bold;
     }
 </style>
 </head>
@@ -144,45 +136,48 @@
 
 <div id="characterStage">
     <div id="mannequin">
-        <!-- Giyilen Parçalar -->
         <div id="wornShoes" class="worn-item"></div>
         <div id="wornDress" class="worn-item"></div>
         <div id="wornAsa" class="worn-item"></div>
         <div id="wornHair" class="worn-item"></div>
         <div id="wornTac" class="worn-item"></div>
-        
-        <!-- Drop Alanı -->
         <div id="dropZone"></div>
     </div>
 </div>
 
-<!-- Menüler (Veri kısımları aynı kaldı) -->
 <div id="leftPanel" class="menu-panel">
-    <div class="menu-header">SAÇLAR</div>
-    <div class="item-grid">
+    <div class="menu-header">SAÇ MODELLERİ</div>
+    <div class="item-grid hair-grid">
         <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_1_giysi.png" style="background-image: url('sac_1.png');"></div>
         <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_2_giysi.png" style="background-image: url('sac_2.png');"></div>
         <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_3_giysi.png" style="background-image: url('sac_3.png');"></div>
+    </div>
+    <div class="menu-header">AYAKKABILAR</div>
+    <div class="item-grid shoes-grid">
+        <div class="item-icon" draggable="true" data-type="shoes" data-worn-img="ayakkabi_1_giysi.png" style="background-image: url('ayakkabi_1.png');"></div>
     </div>
 </div>
 
 <div id="rightPanel" class="menu-panel">
     <div class="menu-header">ELBİSELER</div>
-    <div class="item-grid">
+    <div class="item-grid dress-grid">
         <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_1_giysi.png" style="background-image: url('elbise_1.png');"></div>
         <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_2_giysi.png" style="background-image: url('elbise_2.png');"></div>
+        <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_3_giysi.png" style="background-image: url('elbise_3.png');"></div>
     </div>
 </div>
 
 <div id="bottomPanel" class="menu-panel">
+    <div class="bottom-icon" draggable="true" data-type="tac" data-worn-img="tac_giysi.png" style="background-image: url('tac.png');"></div>
     <button id="btnTemizle" class="action-button">TEMİZLE</button>
     <button id="btnRasgele" class="action-button">RASGELE</button>
-    <button id="btnKaydet" class="action-button">KAYDET</button>
+    <div class="bottom-icon" draggable="true" data-type="asa" data-worn-img="asa_giysi.png" style="background-image: url('asa.png');"></div>
 </div>
 
 <script>
     const icons = document.querySelectorAll('.item-icon, .bottom-icon');
     const dropZone = document.getElementById('dropZone');
+    
     const wornLayers = {
         hair: document.getElementById('wornHair'),
         dress: document.getElementById('wornDress'),
@@ -191,26 +186,58 @@
         asa: document.getElementById('wornAsa')
     };
 
+    // SÜRÜKLEME BAŞLADIĞINDA
     icons.forEach(icon => {
         icon.addEventListener('dragstart', function(e) {
-            e.dataTransfer.setData('text/plain', this.dataset.wornImg);
-            e.dataTransfer.setData('type', this.dataset.type);
+            // Verileri hem text hem de kategori olarak aktar
+            e.dataTransfer.setData('wornImgName', this.getAttribute('data-worn-img'));
+            e.dataTransfer.setData('itemType', this.getAttribute('data-type'));
+            this.style.opacity = "0.5";
+        });
+
+        icon.addEventListener('dragend', function(e) {
+            this.style.opacity = "1";
         });
     });
 
-    dropZone.addEventListener('dragover', (e) => e.preventDefault());
+    // ÜZERİNE GELDİĞİNDE
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault(); // Drop yapmaya izin ver
+    });
 
+    // BIRAKILDIĞINDA (GİYME ANI)
     dropZone.addEventListener('drop', function(e) {
         e.preventDefault();
-        const imgName = e.dataTransfer.getData('text/plain');
-        const type = e.dataTransfer.getData('type');
-        if (wornLayers[type]) {
-            wornLayers[type].style.backgroundImage = `url('${imgName}')`;
+        
+        const imgName = e.dataTransfer.getData('wornImgName');
+        const type = e.dataTransfer.getData('itemType');
+
+        if (type && imgName && wornLayers[type]) {
+            // Arka planı değiştir
+            wornLayers[type].style.backgroundImage = "url('" + imgName + "')";
+            
+            // Eğer resim hala görünmüyorsa kontrol için konsola yaz
+            console.log(type + " giyildi: " + imgName);
         }
     });
 
+    // TEMİZLE BUTONU
     document.getElementById('btnTemizle').addEventListener('click', () => {
-        Object.values(wornLayers).forEach(layer => layer.style.backgroundImage = 'none');
+        Object.values(wornLayers).forEach(layer => {
+            layer.style.backgroundImage = 'none';
+        });
+    });
+
+    // RASGELE BUTONU
+    document.getElementById('btnRasgele').addEventListener('click', () => {
+        const types = ['hair', 'dress', 'shoes'];
+        types.forEach(t => {
+            const items = document.querySelectorAll('.item-icon[data-type="' + t + '"]');
+            if(items.length > 0) {
+                const random = items[Math.floor(Math.random() * items.length)];
+                wornLayers[t].style.backgroundImage = "url('" + random.getAttribute('data-worn-img') + "')";
+            }
+        });
     });
 </script>
 
