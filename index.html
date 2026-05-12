@@ -5,19 +5,21 @@
 <title>Ay Prensesi Lunara - Giydirme Oyunu</title>
 <style>
     /* 1. GENEL AYARLAR VE ARKA PLAN */
-    body {
+    #body {
       margin: 0;
       padding: 0;
       background-image: url('arka_plan.jpg'); 
-    /* "cover" yerine "contain" kullanırsan resmi kırpmaz, 
-       ama kenarlarda boşluk kalabilir. En iyisi "100% 100%" yapmaktır: */
+      /* background-size: cover yerine bunu kullanıyoruz ki resim ezilmesin */
       background-size: 100% 100%; 
       background-position: center;
       background-repeat: no-repeat;
       height: 100vh;
       width: 100vw;
       overflow: hidden;
-   }  
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     /* 2. MANKEN VE KATMANLAR */
     #characterStage {
       position: absolute;
