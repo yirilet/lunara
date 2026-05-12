@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Ay Prensesi Lunara - Giydirme Oyunu</title>
 <style>
-    /* 1. GENEL AYARLAR VE ARKA PLAN */
+    /* 1. GENEL AYARLAR */
     body {
         margin: 0;
         padding: 0;
@@ -28,7 +28,7 @@
         height: 600px;
         left: 50%;
         transform: translateX(-50%);
-        top: 2%; /* Mankenin dikey konumu */
+        top: 2%; 
         z-index: 10;
     }
 
@@ -67,10 +67,10 @@
         height: 90%;
         top: 5%;
         left: 10%;
-        z-index: 30; /* En üstte olmalı ki drop algılansın */
+        z-index: 30; 
     }
 
-    /* 3. MENÜLER VE ARAYÜZ */
+    /* 3. MENÜLER */
     .menu-panel {
         position: absolute;
         background-image: url('menuler_taslak.png');
@@ -89,32 +89,12 @@
         font-weight: bold;
     }
 
-    #leftPanel {
-        width: 250px;
-        height: 420px;
-        left: 30px;
-        top: 35%;
-        transform: translateY(-50%);
-    }
-
-    #rightPanel {
-        width: 250px;
-        height: 750px;
-        right: 30px;
-        top: 55%;
-        transform: translateY(-50%);
-    }
-
+    #leftPanel { width: 250px; height: 480px; left: 30px; top: 35%; transform: translateY(-50%); }
+    #rightPanel { width: 250px; height: 750px; right: 30px; top: 55%; transform: translateY(-50%); }
     #bottomPanel {
-        width: 580px;
-        height: 120px;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        z-index: 100;
+        width: 580px; height: 120px; bottom: 10px; left: 50%;
+        transform: translateX(-50%); display: flex;
+        justify-content: space-around; align-items: center; z-index: 100;
     }
 
     .item-grid {
@@ -122,7 +102,6 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         padding: 10px;
-        justify-items: center;
     }
 
     .item-icon {
@@ -135,31 +114,21 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        transition: transform 0.2s;
     }
 
-    .item-icon:hover { transform: scale(1.05); border-color: white; }
     .shoes-grid .item-icon { height: 65px; }
 
     .bottom-icon {
-        width: 80px;
-        height: 80px;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        cursor: grab;
+        width: 80px; height: 80px;
+        background-size: contain; background-repeat: no-repeat;
+        background-position: center; cursor: grab;
     }
 
     .action-button {
         background: linear-gradient(180deg, #6a5acd, #483d8b);
-        border: 2px solid #e6e6fa;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 20px;
-        text-transform: uppercase;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 11px;
+        border: 2px solid #e6e6fa; color: white;
+        padding: 8px 12px; border-radius: 20px;
+        text-transform: uppercase; font-weight: bold; cursor: pointer;
     }
 </style>
 </head>
@@ -176,41 +145,44 @@
     </div>
 </div>
 
+<!-- SOL PANEL: 5 SAÇ VE 3 AYAKKABI -->
 <div id="leftPanel" class="menu-panel">
     <div class="menu-header">SAÇ MODELLERİ</div>
     <div class="item-grid hair-grid">
-        <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_1_giysi.png" style="background-image: url('sac_1.png');"></div>
-        <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_2_giysi.png" style="background-image: url('sac_2.png');"></div>
-        <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_3_giysi.png" style="background-image: url('sac_3.png');"></div>
-        <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_4_giysi.png" style="background-image: url('sac_4.png');"></div>
-        <div class="item-icon" draggable="true" data-type="hair" data-worn-img="sac_5_giysi.png" style="background-image: url('sac_5.png');"></div>
+        <div class="item-icon" draggable="true" data-type="hair" data-worn="sac_1_giysi.png" style="background-image: url('sac_1.png');"></div>
+        <div class="item-icon" draggable="true" data-type="hair" data-worn="sac_2_giysi.png" style="background-image: url('sac_2.png');"></div>
+        <div class="item-icon" draggable="true" data-type="hair" data-worn="sac_3_giysi.png" style="background-image: url('sac_3.png');"></div>
+        <div class="item-icon" draggable="true" data-type="hair" data-worn="sac_4_giysi.png" style="background-image: url('sac_4.png');"></div>
+        <div class="item-icon" draggable="true" data-type="hair" data-worn="sac_5_giysi.png" style="background-image: url('sac_5.png');"></div>
     </div>
     <div class="menu-header">AYAKKABILAR</div>
     <div class="item-grid shoes-grid">
-        <div class="item-icon" draggable="true" data-type="shoes" data-worn-img="ayakkabi_1_giysi.png" style="background-image: url('ayakkabi_1.png');"></div>
-        <div class="item-icon" draggable="true" data-type="shoes" data-worn-img="ayakkabi_2_giysi.png" style="background-image: url('ayakkabi_2.png');"></div>
-        <div class="item-icon" draggable="true" data-type="shoes" data-worn-img="ayakkabi_3_giysi.png" style="background-image: url('ayakkabi_3.png');"></div>
+        <div class="item-icon" draggable="true" data-type="shoes" data-worn="ayakkabi_1_giysi.png" style="background-image: url('ayakkabi_1.png');"></div>
+        <div class="item-icon" draggable="true" data-type="shoes" data-worn="ayakkabi_2_giysi.png" style="background-image: url('ayakkabi_2.png');"></div>
+        <div class="item-icon" draggable="true" data-type="shoes" data-worn="ayakkabi_3_giysi.png" style="background-image: url('ayakkabi_3.png');"></div>
     </div>
 </div>
 
+<!-- SAĞ PANEL: 6 ELBİSE -->
 <div id="rightPanel" class="menu-panel">
     <div class="menu-header">ELBİSELER</div>
     <div class="item-grid dress-grid">
-        <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_1_giysi.png" style="background-image: url('elbise_1.png');"></div>
-        <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_2_giysi.png" style="background-image: url('elbise_2.png');"></div>
-        <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_3_giysi.png" style="background-image: url('elbise_3.png');"></div>
-        <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_4_giysi.png" style="background-image: url('elbise_4.png');"></div>
-        <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_5_giysi.png" style="background-image: url('elbise_5.png');"></div>
-        <div class="item-icon" draggable="true" data-type="dress" data-worn-img="elbise_6_giysi.png" style="background-image: url('elbise_6.png');"></div>
+        <div class="item-icon" draggable="true" data-type="dress" data-worn="elbise_1_giysi.png" style="background-image: url('elbise_1.png');"></div>
+        <div class="item-icon" draggable="true" data-type="dress" data-worn="elbise_2_giysi.png" style="background-image: url('elbise_2.png');"></div>
+        <div class="item-icon" draggable="true" data-type="dress" data-worn="elbise_3_giysi.png" style="background-image: url('elbise_3.png');"></div>
+        <div class="item-icon" draggable="true" data-type="dress" data-worn="elbise_4_giysi.png" style="background-image: url('elbise_4.png');"></div>
+        <div class="item-icon" draggable="true" data-type="dress" data-worn="elbise_5_giysi.png" style="background-image: url('elbise_5.png');"></div>
+        <div class="item-icon" draggable="true" data-type="dress" data-worn="elbise_6_giysi.png" style="background-image: url('elbise_6.png');"></div>
     </div>
 </div>
 
+<!-- ALT PANEL: TAÇ, ASA VE BUTONLAR -->
 <div id="bottomPanel" class="menu-panel">
-    <div class="bottom-icon" draggable="true" data-type="tac" data-worn-img="tac_giysi.png" style="background-image: url('tac.png');"></div>
+    <div class="bottom-icon" draggable="true" data-type="tac" data-worn="tac_giysi.png" style="background-image: url('tac.png');"></div>
     <button id="btnTemizle" class="action-button">TEMİZLE</button>
     <button id="btnRasgele" class="action-button">RASGELE</button>
     <button id="btnKaydet" class="action-button">KAYDET</button>
-    <div class="bottom-icon" draggable="true" data-type="asa" data-worn-img="asa_giysi.png" style="background-image: url('asa.png');"></div>
+    <div class="bottom-icon" draggable="true" data-type="asa" data-worn="asa_giysi.png" style="background-image: url('asa.png');"></div>
 </div>
 
 <script>
@@ -227,9 +199,8 @@
 
     icons.forEach(icon => {
         icon.addEventListener('dragstart', function(e) {
-            // dataset kullanımı yerine doğrudan getAttribute kullanarak veriyi garanti altına alıyoruz
-            e.dataTransfer.setData('wornImgName', this.getAttribute('data-worn-img'));
-            e.dataTransfer.setData('itemType', this.getAttribute('data-type'));
+            e.dataTransfer.setData('wornImg', this.getAttribute('data-worn'));
+            e.dataTransfer.setData('type', this.getAttribute('data-type'));
         });
     });
 
@@ -237,18 +208,11 @@
 
     dropZone.addEventListener('drop', function(e) {
         e.preventDefault();
-        const imgName = e.dataTransfer.getData('wornImgName');
-        const type = e.dataTransfer.getData('itemType');
+        const img = e.dataTransfer.getData('wornImg');
+        const type = e.dataTransfer.getData('type');
 
-        if (wornLayers[type] && imgName) {
-            wornLayers[type].style.backgroundImage = "url('" + imgName + "')";
-            
-            // Senin istediğin o ufak görsel efekt
-            wornLayers[type].style.opacity = 0;
-            setTimeout(() => { 
-                wornLayers[type].style.transition = 'opacity 0.3s';
-                wornLayers[type].style.opacity = 1; 
-            }, 10);
+        if (wornLayers[type] && img) {
+            wornLayers[type].style.backgroundImage = "url('" + img + "')";
         }
     });
 
@@ -257,18 +221,11 @@
     });
 
     document.getElementById('btnRasgele').addEventListener('click', () => {
-        const categories = ['hair', 'dress', 'shoes'];
-        categories.forEach(type => {
-            const items = document.querySelectorAll('.item-icon[data-type="' + type + '"]');
-            if (items.length > 0) {
-                const randomIcon = items[Math.floor(Math.random() * items.length)];
-                wornLayers[type].style.backgroundImage = "url('" + randomIcon.getAttribute('data-worn-img') + "')";
-            }
+        ['hair', 'dress', 'shoes'].forEach(t => {
+            const items = document.querySelectorAll('[data-type="' + t + '"]');
+            const random = items[Math.floor(Math.random() * items.length)];
+            wornLayers[t].style.backgroundImage = "url('" + random.getAttribute('data-worn') + "')";
         });
-    });
-
-    document.getElementById('btnKaydet').addEventListener('click', () => {
-        alert('Kombininiz kaydedildi!');
     });
 </script>
 
