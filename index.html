@@ -186,6 +186,54 @@
 </div>
 
 <script>
+    // ... (Önceki kodların aynı kalsın, sadece script kısmındaki bu fonksiyonları güncelle)
+
+    function dropItem(e) {
+        e.preventDefault();
+        
+        const imgName = e.dataTransfer.getData('wornImgName') || e.dataTransfer.getData('wornImg') || e.dataTransfer.getData('text/plain');
+        const itemType = e.dataTransfer.getData('itemType') || e.dataTransfer.getData('type');
+        
+        if (wornLayers[itemType]) {
+            wornLayers[itemType].style.backgroundImage = "url('" + imgName + "')";
+
+            // --- YENİ MANKEN GİZLEME MANTIĞI ---
+            if (itemType === 'dress') {
+                // Eğer giydirilen şey elbise ise mankeni gizle
+                document.getElementById('mannequin').style.backgroundImage = "none";
+            }
+            // ----------------------------------
+            
+            wornLayers[itemType].style.opacity = 0;
+            setTimeout(() => { 
+                wornLayers[itemType].style.transition = 'opacity 0.3s';
+                wornLayers[itemType].style.opacity = 1; 
+            }, 10);
+        }
+    }
+
+    // Temizle Butonunu da şu şekilde güncelle ki manken geri gelsin:
+    document.getElementById('btnTemizle').addEventListener('click', () => {
+        Object.values(wornLayers).forEach(layer => layer.style.backgroundImage = 'none');
+        // Elbiseler gidince mankeni geri getir
+        document.getElementById('mannequin').style.backgroundImage = "url('manken_poz.png')";
+    });
+
+    // Rasgele Butonuna da ekleyelim (Eğer rasgele elbise giydirirse manken silinsin)
+    document.getElementById('btnRasgele').addEventListener('click', () => {
+        const categories = ['hair', 'dress', 'shoes'];
+        categories.forEach(type => {
+            const items = document.querySelectorAll('[data-type="' + type + '"]');
+            if (items.length > 0) {
+                const randomIcon = items[Math.floor(Math.random() * items.length)];
+                wornLayers[type].style.backgroundImage = "url('" + randomIcon.getAttribute('data-worn-img') + "')";
+                
+                if (type === 'dress') {
+                    document.getElementById('mannequin').style.backgroundImage = "none";
+                }
+            }
+        });
+    });
     const icons = document.querySelectorAll('.item-icon, .bottom-icon');
     const dropZone = document.getElementById('dropZone');
     
