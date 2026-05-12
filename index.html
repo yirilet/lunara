@@ -50,7 +50,15 @@
         background-position: center;
         pointer-events: none; /* Giysilerin üzerinden sürüklemeye izin ver */
     }
-
+/* Saçı küçültme ve hizalama */
+    #wornHair {
+        width: 80%;       /* Saçın genişliğini %80'e düşürür (İstediğin kadar azaltabilirsin) */
+        height: 80%;      /* Saçın yüksekliğini %80'e düşürür */
+        left: 10%;        /* Sağı ve solu ortalamak için (100-80)/2 = 10 */
+        top: 0%;          /* Yukarı-aşağı konumu buradan ayarla */
+        background-size: contain; 
+    }
+    
     #wornHair { z-index: 15; }    /* Saç en üstte */
     #wornDress { z-index: 12; }   /* Elbise gövdede */
     #wornShoes { z-index: 11; }   /* Ayakkabı altta */
