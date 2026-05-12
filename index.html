@@ -41,21 +41,32 @@
     }
 
     /* Giyilen parçalar için katmanlar (Z-index ile sıralama) */
+/* Genel Kıyafet Katmanları (Mankenle aynı boyutta) */
     .worn-item {
         position: absolute;
         width: 100%;
         height: 100%;
         background-size: contain;
         background-repeat: no-repeat;
-        background-position: center;
-        pointer-events: none; /* Giysilerin üzerinden sürüklemeye izin ver */
-    }
+        pointer-events: none;
+        z-index: 10;
+   }
 
-    #wornHair { z-index: 15; }    /* Saç en üstte */
-    #wornDress { z-index: 12; }   /* Elbise gövdede */
-    #wornShoes { z-index: 11; }   /* Ayakkabı altta */
-    #wornTac { z-index: 16; }    /* Taç saçın üstünde */
-    #wornAsa { z-index: 13; }    /* Asa elde, elbisenin üstünde/altında */
+/* SADECE SAÇ İÇİN ÖZEL AYAR (Ekranı kaplamaması için) */
+    #wornHair {
+    /* Mankenin kafasına tam oturtmak için boyutu orantılı olarak sınırla */
+        background-size: initial; /* Genel 'contain' ayarını sıfırla */
+        width: 50%;   /* Mankenin (characterStage) genişliğinin yarısı kadar olsun (Hizalamaya göre değiştirilebilir) */
+        height: 35%;  /* Mankenin yüksekliğinin üçte biri kadar olsun (Hizalamaya göre değiştirilebilir) */
+        left: 25%;    /* Saçı yatayda tam ortala (100-50=50, 50/2=25) */
+        top: -2%;     /* Saçı mankenin kafasının tam tepesine oturt (Kafadan çok az yukarıda) */
+        z-index: 20;  /* Saç, elbisenin önünde olsun */
+    
+    /* Netlik için (önceki konuştuğumuz) */
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        transform: translateZ(0); /* Bazı tarayıcılarda kaymayı önler */
+}
 
     /* Bırakma Alanı (Drop Zone) - Mankenin gövdesi */
     #dropZone {
