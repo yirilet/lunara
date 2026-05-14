@@ -32,6 +32,7 @@
     }
 
     #mannequin {
+        position: relative;
         width: 100%;
         height: 100%;
         background-image: url('manken_poz.png'); /* image_1.png'den kesilen manken */
@@ -78,43 +79,43 @@
 /* Elbise 1 */
     [data-worn="elbise_1_giysi.png"] { 
         background-size: 100% !important; 
-        background-position: center top !important; 
+        background-position: center 25px !important; 
     }
 
 /* Elbise 2 */
     [data-worn="elbise_2_giysi.png"] { 
         background-size: 100% !important; 
-        background-position: center top !important; 
+        background-position: center 28px !important; 
     }
 
 /* Elbise 3 */
     [data-worn="elbise_3_giysi.png"] { 
         background-size: 100% !important; 
-        background-position: center top !important; 
+        background-position: center 22px !important; 
     }
 
 /* Elbise 4 */
     [data-worn="elbise_4_giysi.png"] { 
         background-size: 100% !important; 
-        background-position: center top !important; 
+        background-position: center 24px !important; 
     }
 
 /* Elbise 5 */
     [data-worn="elbise_5_giysi.png"] { 
         background-size: 100% !important; 
-        background-position: center top !important; 
+        background-position: center 26px !important; 
     }
 
 /* Elbise 6 */
     [data-worn="elbise_6_giysi.png"] { 
         background-size: 80% !important; 
-        background-position: center 50px 20px !important; 
+        background-position: center 30px !important; 
     }
 
 /* Elbise 7 */
     [data-worn="elbise_7_giysi.png"] { 
         background-size: 100% !important; 
-        background-position: center top !important; 
+        background-position: center 25px !important; 
     }
 /* ------------------------------- */
     /* Giyilen parçalar için katmanlar (Z-index ile sıralama) */
@@ -362,11 +363,13 @@
         const itemType = e.dataTransfer.getData('type');
 
         if (wornLayers[itemType]) {
-            wornLayers[itemType].style.backgroundImage = `url('${wornImgName}')`;
-            wornLayers[itemType].style.opacity = 0;
-            wornLayers[itemType].style.transition = 'opacity 0.3s';
+            const wornElement = wornLayers[itemType];
+            wornElement.style.backgroundImage = `url('${wornImgName}')`;
+            wornElement.dataset.worn = wornImgName;
+            wornElement.style.opacity = 0;
+            wornElement.style.transition = 'opacity 0.3s';
             setTimeout(() => {
-                wornLayers[itemType].style.opacity = 1;
+                wornElement.style.opacity = 1;
             }, 10);
         }
     }
@@ -377,6 +380,7 @@
     document.getElementById('btnTemizle').addEventListener('click', () => {
         for (let layer in wornLayers) {
             wornLayers[layer].style.backgroundImage = 'none';
+            wornLayers[layer].removeAttribute('data-worn');
         }
     });
 
@@ -386,7 +390,9 @@
             const items = document.querySelectorAll(`.item-icon[data-type="${type}"]`);
             if (items.length > 0) {
                 const randomIcon = items[Math.floor(Math.random() * items.length)];
-                wornLayers[type].style.backgroundImage = `url('${randomIcon.dataset.wornImg}')`;
+                const wornElement = wornLayers[type];
+                wornElement.style.backgroundImage = `url('${randomIcon.dataset.wornImg}')`;
+                wornElement.dataset.worn = randomIcon.dataset.wornImg;
             }
         });
     });
