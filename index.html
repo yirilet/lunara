@@ -326,11 +326,10 @@
 </div>
 
 <script>
-    // 1. ÖĞELERİ VE ALANLARI SEÇME
+
     const icons = document.querySelectorAll('.item-icon, .bottom-icon');
     const dropZone = document.getElementById('dropZone');
-    
-    // Giyilen parçaların katmanları
+
     const wornLayers = {
         hair: document.getElementById('wornHair'),
         dress: document.getElementById('wornDress'),
@@ -339,7 +338,6 @@
         asa: document.getElementById('wornAsa')
     };
 
-    // 2. SÜRÜKLEME MANTIĞI (DRAG)
     icons.forEach(icon => {
         icon.addEventListener('dragstart', dragStart);
         icon.addEventListener('dragend', dragEnd);
@@ -347,47 +345,42 @@
 
     function dragStart(e) {
         this.classList.add('dragging');
-        // Sürüklenen öğenin verilerini transfer et
-        e.dataTransfer.setData('text/plain', this.dataset.wornImg); // Manken üzerindeki görselin adı
-        e.dataTransfer.setData('type', this.dataset.type);         // Kategorisi
+        e.dataTransfer.setData('text/plain', this.dataset.wornImg);
+        e.dataTransfer.setData('type', this.dataset.type);
     }
 
     function dragEnd() {
         this.classList.remove('dragging');
     }
 
-    // 3. BIRAKMA MANTIĞI (DROP)
-    dropZone.addEventListener('dragover', dragOver);
-    dropZone.addEventListener('drop', dropItem);
-
     function dragOver(e) {
-        e.preventDefault(); // Varsayılanı engelle (bırakmaya izin ver)
+        e.preventDefault();
     }
-        
-        // Verileri al
+
+    function dropItem(e) {
+        e.preventDefault();
         const wornImgName = e.dataTransfer.getData('text/plain');
         const itemType = e.dataTransfer.getData('type');
-        
+
         if (wornLayers[itemType]) {
-            // İlgili katmanın arka plan görselini değiştir (Giydir)
             wornLayers[itemType].style.backgroundImage = `url('${wornImgName}')`;
-            
-            // Görsel efekt (isteğe bağlı)
             wornLayers[itemType].style.opacity = 0;
-            setTimeout(() => { wornLayers[itemType].style.opacity = 1; wornLayers[itemType].style.transition = 'opacity 0.3s'; }, 10);
+            wornLayers[itemType].style.transition = 'opacity 0.3s';
+            setTimeout(() => {
+                wornLayers[itemType].style.opacity = 1;
+            }, 10);
         }
     }
 
-    // 4. BUTON FONKSİYONLARI
-    
-    // Temizle Butonu
+    dropZone.addEventListener('dragover', dragOver);
+    dropZone.addEventListener('drop', dropItem);
+
     document.getElementById('btnTemizle').addEventListener('click', () => {
         for (let layer in wornLayers) {
             wornLayers[layer].style.backgroundImage = 'none';
         }
     });
 
-    // Rasgele Butonu
     document.getElementById('btnRasgele').addEventListener('click', () => {
         const categories = ['hair', 'dress', 'shoes'];
         categories.forEach(type => {
@@ -397,10 +390,8 @@
                 wornLayers[type].style.backgroundImage = `url('${randomIcon.dataset.wornImg}')`;
             }
         });
-        // Alt menü öğelerini de dahil edebilirsin
     });
 
-    // Kaydet Butonu (Basit bir örnek)
     document.getElementById('btnKaydet').addEventListener('click', () => {
         alert('Kombininiz kaydedildi! (Bu kısım sunucu bağlantısı gerektirir)');
     });
