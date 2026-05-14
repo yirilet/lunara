@@ -363,12 +363,6 @@
     function dragOver(e) {
         e.preventDefault(); // Varsayılanı engelle (bırakmaya izin ver)
     }
-    
-    // Drop fonksiyonunun içine bunu ekle:
-    wornLayers[type].setAttribute('data-worn', img);
-    function dropItem(e) {
-        
-        e.preventDefault();
         
         // Verileri al
         const wornImgName = e.dataTransfer.getData('text/plain');
